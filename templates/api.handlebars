@@ -1,0 +1,93 @@
+import client, {RequestConfig, RequestResponse} from "./client";
+
+/** -------- services -------- */
+
+{{#each services}}
+/**
+ * {{this.summary}}
+ {{#if this.description}}
+ * @description {{this.description}}
+ {{/if}}
+ */
+export function {{this.name}}({{#if this.hasParams}}params: {{this.name}}Params, {{/if}}config?: RequestConfig): Promise<RequestResponse<{{this.name}}Data>> {
+    {{#if this.headers}}
+    config ??= { headers: {} }
+    config.headers = Object.assign({...params.header}, config.headers)
+    {{/if}}
+    return client.request({
+        method: "{{this.method}}",
+        url: `{{this.path}}`,
+        {{#if this.queryParams}}
+        params: params.query,
+        {{/if}}
+        {{#if this.requestBody.schema}}
+        data: params.body,
+        {{/if}}
+        ...config,
+    })
+}
+
+{{/each}}
+
+/** -------- params && data -------- */
+
+{{#each services}}
+{{#if this.hasParams}}
+/**
+ * {{this.summary}}【请求参数】
+ */
+interface {{this.name}}Params {
+    {{#if this.pathParams}}
+    path: {
+        {{#each this.pathParams}}
+        {{#if this.description}}
+        /** {{this.description}} */
+        {{/if}}
+        {{this.name}}{{#unless this.required}}?{{/unless}}: {{this.schema.type}},
+        {{/each}}
+    },
+    {{/if}}
+    {{#if this.queryParams}}
+    query{{#unless this.queryParamsRequired}}?{{/unless}}: {
+        {{#each this.queryParams}}
+        {{#if this.description}}
+        /** {{this.description}} */
+        {{/if}}
+        {{this.name}}{{#unless this.required}}?{{/unless}}: {{this.schema.type}},
+        {{/each}}
+    },
+    {{/if}}
+    {{#if this.headers}}
+    header{{#unless this.headersRequired}}?{{/unless}}: {
+        {{#each this.headers}}
+        {{#if this.description}}
+        /** {{this.description}} */
+        {{/if}}
+        {{this.name}}{{#unless this.required}}?{{/unless}}: {{this.schema.type}},
+        {{/each}}
+    },
+    {{/if}}
+    {{#if this.requestBody.schema}}
+    body: {{&renderSchema this.requestBody.schema}}
+    {{/if}}
+}
+
+{{/if}}
+/**
+ * {{this.summary}}【返回数据】
+ */
+{{#if this.jsonResponse.schema}}
+type {{this.name}}Data = {{&renderSchema this.jsonResponse.schema}}
+{{else}}
+type {{this.name}}Data = any
+{{/if}}
+
+
+{{/each}}
+
+/** -------- models -------- */
+
+{{#each models}}
+type {{this.name}} = {{&renderSchema this.schema}}
+
+{{/each}}

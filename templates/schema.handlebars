@@ -1,0 +1,21 @@
+{{~#ifCond type '==' 'string'}}"string"{{/ifCond}}
+{{~#ifCond type '==' 'number'}}number{{/ifCond}}
+{{~#ifCond type '==' 'boolean'}}boolean{{/ifCond}}
+{{~#ifCond type '==' 'integer'}}number{{/ifCond}}
+{{~#ifCond type '==' 'null'}}null{{/ifCond}}
+{{~#ifCond type '==' 'any'}}any{{/ifCond}}
+{{~#ifCond type '==' 'array'}}Array<{{&renderSchema items}}>{{/ifCond}}
+{{~#ifCond type '==' 'object'}}{
+    {{#each properties}}
+    {{#if this.description}}
+    /** {{this.description}} */
+    {{/if}}
+    {{@key}}: {{&renderSchema this~}},
+    {{/each}}
+}{{/ifCond}}
+{{~#if $ref}}{{&getRef $ref}}{{/if}}
+{{~#if oneOf}}
+{{~#each oneOf}}
+{{~#ifCond @index '!=' 0 }} | {{/ifCond}}{{&renderSchema this}}
+{{~/each}}
+{{/if}}

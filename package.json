@@ -1,13 +1,14 @@
 {
   "name": "openapi-axios-codegen",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "main.js",
   "bin": {
     "openapi-axios-codegen": "./main.js"
   },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "prepublish": "npm run build"
   },
   "author": "",
   "license": "ISC",

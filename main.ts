@@ -8,7 +8,7 @@ import ts from "typescript"
 import 'dotenv/config'
 
 const url = process.env['API_URL'] as string
-const lang = process.env['API_LANG'] = 'ts'
+const lang = process.env['API_LANG'] || 'ts'
 const outputDir = process.env['API_OUTPUT'] as string
 
 if (!url) {

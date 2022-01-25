@@ -20,7 +20,7 @@ const handlebars_1 = __importDefault(require("handlebars"));
 const typescript_1 = __importDefault(require("typescript"));
 require("dotenv/config");
 const url = process.env['API_URL'];
-const lang = process.env['API_LANG'] = 'ts';
+const lang = (process.env['API_LANG']) || 'ts';
 const outputDir = process.env['API_OUTPUT'];
 if (!url) {
     throw new Error("未设置 API_URL");
@@ -234,6 +234,7 @@ function generate(openApiDefinition, options) {
         }
         if (lang === 'js' && !fs_1.default.existsSync(clientJsPath)) {
             clientAlreadyExists = false;
+            fs_1.default.writeFileSync(clientPath, clientContent);
         }
         if (lang === 'js') {
             // 生成 js

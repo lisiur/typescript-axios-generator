@@ -13,6 +13,7 @@ specifiers:
 dependencies:
   dotenv: registry.npmmirror.com/dotenv/14.3.0
   handlebars: registry.npmmirror.com/handlebars/4.7.7
+  typescript: registry.npmmirror.com/typescript/4.5.5
 
 devDependencies:
   '@types/node': registry.npmmirror.com/@types/node/17.0.10
@@ -20,13 +21,20 @@ devDependencies:
   '@typescript-eslint/parser': registry.npmmirror.com/@typescript-eslint/parser/5.10.0_eslint@8.7.0+typescript@4.5.5
   eslint: registry.npmmirror.com/eslint/8.7.0
   ts-node: registry.npmmirror.com/ts-node/10.4.0_9d6cd740eceb93d711351e2e9548d1bd
-  typescript: registry.npmmirror.com/typescript/4.5.5
 
 packages:
 
   /concat-map/0.0.1:
     resolution: {integrity: sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=, tarball: concat-map/download/concat-map-0.0.1.tgz}
     dev: true
+
+  /uglify-js/3.14.5:
+    resolution: {integrity: sha512-qZukoSxOG0urUTvjc2ERMTcAy+BiFh3weWAkeurLwjrCba73poHmG3E36XEjd/JGukMzwTL7uCxZiAexj8ppvQ==}
+    engines: {node: '>=0.8.0'}
+    hasBin: true
+    requiresBuild: true
+    dev: false
+    optional: true
 
   registry.nlark.com/@cspotcode/source-map-consumer/0.8.0:
     resolution: {integrity: sha1-M79LeznBeIIWBvZpu8RHpqYpeGs=, registry: https://registry.npm.taobao.org/, tarball: https://registry.nlark.com/@cspotcode/source-map-consumer/download/@cspotcode/source-map-consumer-0.8.0.tgz}
@@ -1110,7 +1118,7 @@ packages:
       source-map: registry.nlark.com/source-map/0.6.1
       wordwrap: registry.nlark.com/wordwrap/1.0.0
     optionalDependencies:
-      uglify-js: registry.npmmirror.com/uglify-js/3.14.5
+      uglify-js: 3.14.5
     dev: false
 
   registry.npmmirror.com/has-flag/4.0.0:
@@ -1303,14 +1311,4 @@ packages:
     version: 4.5.5
     engines: {node: '>=4.2.0'}
     hasBin: true
-    dev: true
-
-  registry.npmmirror.com/uglify-js/3.14.5:
-    resolution: {integrity: sha512-qZukoSxOG0urUTvjc2ERMTcAy+BiFh3weWAkeurLwjrCba73poHmG3E36XEjd/JGukMzwTL7uCxZiAexj8ppvQ==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/uglify-js/download/uglify-js-3.14.5.tgz}
-    name: uglify-js
-    version: 3.14.5
-    engines: {node: '>=0.8.0'}
-    hasBin: true
-    requiresBuild: true
     dev: false
-    optional: true

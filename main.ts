@@ -258,6 +258,7 @@ async function generate(openApiDefinition: OpenApi, options: { lang: 'ts' | 'js'
     }
     if (lang === 'js' && !fs.existsSync(clientJsPath)) {
         clientAlreadyExists = false
+        fs.writeFileSync(clientPath, clientContent)
     }
 
     if (lang === 'js') {

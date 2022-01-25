@@ -11,17 +11,11 @@ export interface OpenApi {
         summary: string,
         deprecated: boolean,
         description: string,
+        operationId?: string,
         tags: string[],
         parameters?: Array<Parameter>
         requestBody?: RequestBody
-        responses: Record<"200", {
-            description: string,
-            content: {
-                "application/json": {
-                    schema: Schema,
-                }
-            }
-        }>
+        responses: Responses
     }>>,
     components: {
         schemas: Record<string, Schema>
@@ -41,6 +35,16 @@ export interface RequestBody {
         schema: Schema,
     }>
 }
+
+export type Responses = Record<string, {
+    description: string,
+    content: {
+        "application/json"?: {
+            schema: Schema,
+        },
+        [k: string]: unknown
+    }
+}>
 
 export type Schema = ({
     type: "object",

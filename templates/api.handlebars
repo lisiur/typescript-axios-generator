@@ -1,4 +1,8 @@
-import client, {RequestConfig, RequestResponse} from "./client";
+/* eslint-disable */
+/**
+ * 自动生成，请勿手动修改
+ */
+import client, {Service, NonParamsService} from "./client";
 
 /** -------- services -------- */
 
@@ -9,10 +13,10 @@ import client, {RequestConfig, RequestResponse} from "./client";
  * @description {{this.description}}
  {{/if}}
  */
-export function {{this.name}}({{#if this.hasParams}}params: {{this.name}}Params, {{/if}}config?: RequestConfig): Promise<RequestResponse<{{this.name}}Data>> {
+export const {{this.name}}: {{#if this.hasParams}}Service{{else}}NonParamsService{{/if}}<{{#if this.hasParams}}{{this.CamelCaseName}}Params, {{/if}}{{this.CamelCaseName}}Data> = ({{#if this.hasParams}}params, {{/if}}config) => {
     {{#if this.headers}}
     config ??= { headers: {} }
-    config.headers = Object.assign({...params.header}, config.headers)
+    config.headers = {...params.header, ...config.headers}
     {{/if}}
     return client.request({
         method: "{{this.method}}",
@@ -36,7 +40,7 @@ export function {{this.name}}({{#if this.hasParams}}params: {{this.name}}Params,
 /**
  * {{this.summary}}【请求参数】
  */
-interface {{this.name}}Params {
+interface {{this.CamelCaseName}}Params {
     {{#if this.pathParams}}
     path: {
         {{#each this.pathParams}}
@@ -53,7 +57,7 @@ interface {{this.name}}Params {
         {{#if this.description}}
         /** {{this.description}} */
         {{/if}}
-        {{this.name}}{{#unless this.required}}?{{/unless}}: {{this.schema.type}},
+        {{this.name}}{{#unless this.required}}?{{/unless}}: {{&renderSchema this.schema}},
         {{/each}}
     },
     {{/if}}
@@ -77,9 +81,9 @@ interface {{this.name}}Params {
  * {{this.summary}}【返回数据】
  */
 {{#if this.jsonResponse.schema}}
-type {{this.name}}Data = {{&renderSchema this.jsonResponse.schema}}
+type {{this.CamelCaseName}}Data = {{&renderSchema this.jsonResponse.schema}}
 {{else}}
-type {{this.name}}Data = any
+type {{this.CamelCaseName}}Data = any
 {{/if}}
 
 

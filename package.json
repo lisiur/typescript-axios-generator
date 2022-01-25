@@ -1,20 +1,26 @@
 {
-  "name": "typescript-axios-generator",
+  "name": "openapi-axios-codegen",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
+  "bin": {
+    "openapi-axios-codegen": "./main.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.25.0",
-    "handlebars": "^4.7.7"
+    "dotenv": "^14.3.0",
+    "handlebars": "^4.7.7",
+    "typescript": "^4.5.5"
   },
   "devDependencies": {
     "@types/node": "^17.0.10",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.5.5"
+    "@typescript-eslint/eslint-plugin": "^5.10.0",
+    "@typescript-eslint/parser": "^5.10.0",
+    "eslint": "^8.7.0",
+    "ts-node": "^10.4.0"
   }
 }

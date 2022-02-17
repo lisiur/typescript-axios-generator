@@ -7,32 +7,58 @@ export interface RequestParams {
     header?: unknown,
 }
 
-export type RequestConfig<Params extends RequestParams> = AxiosRequestConfig<Params['body']>
+export interface RequestConfig<Params extends RequestParams = any, Data = any> extends AxiosRequestConfig<Params['body']> {
+    loading?: boolean;
+    checkRes?: boolean;
+    errorMsg?: boolean | string | ((err: RequestError<Data, Params>) => string);
+    successMsg?: string | ((res: RequestResponse<Data, Params>) => string);
+}
 
-export type RequestResponse<ResData, ReqParams extends RequestParams> = AxiosResponse<ResData, ReqParams['body']>
+export interface RequestError<Data = any, Params extends RequestParams = any> {
+    response?: AxiosResponse<Data, Params['body']>;
+    request?: XMLHttpRequest;
+    config: RequestConfig<Params, Data>;
+    message: string;
+}
+
+export type RequestResponse<ResData = any, ReqParams extends RequestParams = any> = AxiosResponse<ResData, ReqParams['body']>
 
 export interface Service<Params extends RequestParams, Data> {
-    (params: Params, config?: RequestConfig<Params>): Promise<RequestResponse<Data, Params>>;
+    (params: Params, config?: RequestConfig<Params, Data>): Promise<RequestResponse<Data, Params>>;
 }
 export interface NonParamsService<Data> {
-    (config?: RequestConfig<never>): Promise<RequestResponse<Data, never>>;
+    (config?: RequestConfig<never, Data>): Promise<RequestResponse<Data, never>>;
 }
+
+// 推断 Plugin 的配置参数类型
+type InferPluginConfigType<
+    T extends (instance: AxiosInstance, config: unknown[]) => () => void
+    > = T extends (instance: AxiosInstance, config: infer P) => () => void
+    ? P
+    : never;
 
 class Client {
     readonly #instance: AxiosInstance
 
-    constructor() {
-        this.#instance = axios.create({
-            baseURL: "",
-        })
+    constructor(config: AxiosRequestConfig) {
+        this.#instance = axios.create(config);
     }
     // 发起请求
     request<Params extends RequestParams, Data>(
-        config: RequestConfig<Params>
+        config: RequestConfig<Params, Data>
     ): Promise<RequestResponse<Data, Params>> {
         return this.#instance.request(config);
     }
 
+    // 安装插件
+    install<T extends (instance: AxiosInstance, config?: any) => () => void>(
+        plugin: T,
+        config?: InferPluginConfigType<T>
+    ): Client {
+        plugin(this.#instance, config);
+        return this;
+    }
+
 }
 
-export default new Client()
+export default new Client({})
